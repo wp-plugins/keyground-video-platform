@@ -1,5 +1,6 @@
 === Plugin Name ===
 Contributors: keyground
+Donate link: 
 Tags: video, keyground
 Requires at least: 2.0.2
 Tested up to: 2.1
@@ -18,7 +19,24 @@ For more information please visit http://support.keyground.com
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Take your API Key from http://platform.keyground.com Account -> Api Key section and put in to plugins settings page. 
 
+== Frequently Asked Questions ==
+
+= Support link for this plugin=
+
+http://support.keyground.com
 
 
-`<?php code(); // goes in backticks ?>`
+== Screenshots ==
+1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
+the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
+2. This is the second screen shot
 
+== Changelog ==
+
+= 1.0 =
+* This is the first version of the plugin.
+
+== Upgrade Notice ==
+
+= 1.0 =
+This is the first version of the plugin.
