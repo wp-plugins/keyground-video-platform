@@ -3,7 +3,7 @@ Contributors: keyground
 Donate link: 
 Tags: video, keyground
 Requires at least: 2.0.2
-Tested up to: 2.1
+Tested up to: 3.2.1
 Stable tag: 4.3
 
 
