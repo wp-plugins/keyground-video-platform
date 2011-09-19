@@ -1,6 +1,10 @@
 <?php
 require_once 'libs/kgsdk/0.3.0/kglib.class.php';
 
+#new
+	require 'libs-new/functions.php';
+#	$api_key = '4f6b5b32c1c4771df3af44c346f524a5babdca4e';
+
 if(is_file('wp-admin/includes/taxonomy.php')) include_once 'wp-admin/includes/taxonomy.php';
 else include_once 'includes/taxonomy.php';
 
@@ -26,6 +30,8 @@ class keyground
 			
 		} else {
 			$this->kg = new kg(get_option('kg_api_key'));
+			#new
+			$this->api_key=$api_key;
 		}
 		
 		
@@ -137,6 +143,8 @@ class keyground
 		$kg = new kg(get_option('kg_api_key'));
 		
 		
+#		$data=sendRequest($api_key, 'getChannels');
+#		$channels=$data->channels->channel;
 		
 		$result=$kg->sendRequest("getChannels",array("lastModified"=>get_option("kg_last_update"),"pagination"=>"no"));
 		//kanallara bak
@@ -216,7 +224,8 @@ class keyground
 				}
 				else
 				{
-					echo "errors on wp_insert_term<br>";
+					echo "errors on wp_insert_term(2)<br>";
+					print_r($result);
 				}
 			
 			}
@@ -401,6 +410,9 @@ class keyground
 	function setupPlugin()
 	{
 		$api = new kg(get_option('kg_api_key'));
+		#new
+		$api_key= get_option('kg_api_key');
+		
 		
 		//api key api user kontrolu
 		$result = $api->sendRequest("getVideos",$params=null);
@@ -451,13 +463,20 @@ class keyground
 		}
 		else
 		{
-			echo "errors on wp_insert_term<br>";
+			echo "errors on wp_insert_term(3)<br>";
+			print_r($result);
 		}
 		
 		//channelları alt kategori olarak ekleyelim.
-		$result=$api->sendRequest("getChannels",""); //id name s_description description getirecek
+	
+		#old
+		#$result=$api->sendRequest("getChannels",""); //id name s_description description getirecek
+		#$kanallar=$result->channels->channel;
 		
-		foreach($result->channels->channel as $channel)
+		$data=sendRequest($api_key, 'getChannels');
+		$channels=$data->channels->channel;
+		
+		foreach($channels as $channel)
 		{ 
 						
 			
@@ -477,7 +496,8 @@ class keyground
 			}
 			else
 			{
-				echo "errors on wp_insert_term<br>";
+				echo "errors on wp_insert_term(1)<br>";
+				print_r($result);
 			}
 			
 	
@@ -513,7 +533,7 @@ class keyground
 		*/
 		
 		//wordpressteki iliskili tum postlari bulalim.
-		$the_query = new WP_Query( array( 'meta_key' => 'kgvideo_id') );
+		$the_query = new WP_Query( array( 'meta_key' => 'kgvideo_id' , 'posts_per_page' => '-1') );
 		$posts=$the_query->get_posts();
 		
 		if(count($posts)>0)
@@ -525,7 +545,8 @@ class keyground
 				$i++;
 			}
 		}
-		//
+		//debug
+		//print_r($postIds);
 		
 		if(count($posts)>0)
 		{
