@@ -2,8 +2,7 @@
 require_once 'libs/kgsdk/0.3.0/kglib.class.php';
 
 #new
-	require 'libs-new/functions.php';
-#	$api_key = '4f6b5b32c1c4771df3af44c346f524a5babdca4e';
+require 'libs-new/functions.php';
 
 if(is_file('wp-admin/includes/taxonomy.php')) include_once 'wp-admin/includes/taxonomy.php';
 else include_once 'includes/taxonomy.php';
@@ -90,6 +89,9 @@ class keyground
 			//$kg->sendRequest("getVideoDetails",$params);
 			$data = $kg->sendRequest("getVideoDetails",array("videoId"=>$attr['id']));
 			$video=$data->video->embed_code;
+			
+			//var_dump($data);
+			
 			if($video)//eger ulasip cekemezse ortadaki degeri gosterelim
 			{
 				return $video;
@@ -110,6 +112,7 @@ class keyground
 		
 	
 			$data = $kg->sendRequest("getVideoDetails",array("videoId"=>$attr['id']));
+			
 			$video=$data->video->description;
 			
 			if($video) //eger ulasip cekemezse ortadaki degeri gosterelim
@@ -147,9 +150,13 @@ class keyground
 #		$channels=$data->channels->channel;
 		
 		$result=$kg->sendRequest("getChannels",array("lastModified"=>get_option("kg_last_update"),"pagination"=>"no"));
+		
+		//var_dump($result);
 		//kanallara bak
 		$updated_channels=$result->channels->channel;
 		$i=0;
+		
+		if(count($updated_channels)>=1)
 		foreach ($updated_channels as $channel)
 		{
 			$channelIds[$i]["id"]=(string)$channel->id;
@@ -158,7 +165,9 @@ class keyground
 		}
 		
 		
-		$result=$kg->sendRequest("getVideos",array("lastModified"=>get_option("kg_last_update"),"order"=>"lastModified ASC","pagination"=>"no" )); //hepsini cek
+		$result=$kg->sendRequest("getVideos",array("lastModified"=>get_option("kg_last_update"),"order"=>"lastModified ASC","pagination"=>"no","per_page"=>"1000" )); //hepsini cek
+
+		//var_dump($result);
 		//videolara bak
 		
 		/*echo "CHECK";
@@ -168,15 +177,15 @@ class keyground
 		
 		$updated_videos=$result->videos->video;
 		$i=0;
+		
+		if(count($updated_videos)>=1)
 		foreach ($updated_videos as $video)
 		{
 			$videoIds[$i]=(string)$video->id;
 			$i++;
 		}
 		
-		
-		
-		
+
 		$updates=array("channels"=>$channelIds,"videos"=>$videoIds);
 		
 		return $updates;
@@ -560,7 +569,7 @@ class keyground
 
 
 		//keygrounddan postlari ekle  // HEPSİNİ ÇEK
-		$kgVideos = $api->sendRequest("getVideos",array("order"=>"lastModified ASC","pagination"=>"no"));
+		$kgVideos = $api->sendRequest("getVideos",array("order"=>"lastModified ASC","pagination"=>"no","per_page"=>"1000"));
 		
 		$videos=$kgVideos->videos->video; //xmltoObject calisma mantigi
 		
@@ -627,6 +636,7 @@ class keyground
 				'post_title' => (string)$result->video->title ,
 				'tags_input' => $tags, 
 				'post_type' => 'post',
+				'post_excerpt' =>  $content,
 				'post_status' => 'publish'
 			);
 			

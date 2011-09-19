@@ -18,23 +18,18 @@ $kg = new keyground();
 
 
 
-//if(get_post_meta($_GET['p'], 'kg_video_id',true)!="")
-//add_filter( "the_content", array('keyground','showVideo') );
-
-
-
-//add_filter( "the_content", array('keyground','renderTags') ); 
+// 
 add_shortcode('keyground', array('keyground','renderTags'));
-add_filter( 'the_excerpt', array('keyground','renderTags'));
+
+add_filter('the_excerpt','do_shortcode');
+
 
 
 //add_filter( "the_content", array('keyground','setupPlugin') );
 
 
 
-/*if($_GET['page_id']==get_option('kg_page_id'))
-add_filter( "the_content", array('keyground','showVideo') );
-
+/*
 add_action( 'widgets_init', 'kg_load_widgets' );
 */
 
@@ -58,12 +53,7 @@ add_action('admin_menu', 'kg_menu');
 
 function kg_menu()
 {
-//add_submenu_page( "Options", "Keyground WP Plugin Administration", "Keyground", "admin", "keyground", "keyground::showAdmin");
-add_options_page('Keyground WP Plugin Administration', 'Keyground', 'manage_options', 'keyground', 'showAdmin');
-
-//add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function ) 
-//add_submenu_page('options_general.php','Keyground WP Admin','Keyground','manage_options','keyground','showAdmin');
-
+	add_options_page('Keyground WP Plugin Administration', 'Keyground', 'manage_options', 'keyground', 'showAdmin');
 }
 
 function showAdmin()
