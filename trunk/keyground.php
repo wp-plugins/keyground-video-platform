@@ -3,7 +3,7 @@
 Plugin Name: Keyground
 Plugin URI: http://www.keyground.com/plugins/wordpress
 Description: Adds Web TV functionality to your wordpress blog. This plugin integrates your wordpress to your keyground account. 
-Version: 0.2
+Version: 0.3
 Author: Keyground
 Author URI: http://www.keyground.com
 License: GPL2
