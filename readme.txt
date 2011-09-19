@@ -33,10 +33,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 1.0 =
+= 0.2 =
 * This is the first version of the plugin.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 0.2 =
 This is the first version of the plugin.
