@@ -3,8 +3,8 @@ Contributors: keyground
 Donate link: 
 Tags: video, keyground
 Requires at least: 2.0.2
-Tested up to: 2.1
-Stable tag: 4.3
+Tested up to: 3.2.1
+Stable tag: 0.3.2
 
 
 == Description ==
@@ -33,10 +33,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 1.0 =
+= 0.3.2 =
 * This is the first version of the plugin.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 0.3.2 =
 This is the first version of the plugin.
