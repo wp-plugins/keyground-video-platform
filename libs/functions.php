@@ -1,4 +1,7 @@
 <?php
+
+#old
+/*
 function limitStr($str,$lmt)
 {
 	if(strlen($str)>$lmt){
@@ -8,7 +11,7 @@ function limitStr($str,$lmt)
 		return $str;
 }
 
-
+*/
 
 
 
