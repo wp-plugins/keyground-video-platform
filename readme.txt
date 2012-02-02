@@ -4,7 +4,7 @@ Donate link:
 Tags: video, keyground
 Requires at least: 2.0.2
 Tested up to: 3.3.1
-Stable tag: 0.4
+Stable tag: 0.4.1
 
 
 == Description ==
@@ -33,7 +33,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
-= 0.4 =
+= 0.4.1 =
+* Small bug fixes.
+
+= 0.4.0 =
 * Auto update disabled. it will be enabled in next version.
 * Added media button on wp editor for selecting Keyground Videos.
 * Used Keyground PHP SDK for integration. Removed other functions and libraries about Keyground.
