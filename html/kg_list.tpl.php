@@ -1,21 +1,17 @@
 <script>
-function load(divId,action,data)
-{
-	/*
-	jQuery.ajax({
-		type: 'POST',
-		action: action,
-		url:ajaxurl,
-		data: data,
-		success: function(response) {
-			jQuery('#'+divId).html(response);
-		}
+jQuery(document).ready(function() {
+	jQuery("div#video_list").ajaxStart(function(){
+		jQuery(this).html('<div id="loading"><img src="<?=$this->base_url?>html/images/1loading.gif"/> <br/> Loading...</div>');
 	});
-	*/
-
+});
+		
+function load(divId,action,channelId,page,q)
+{
 	var post_data = {
 			action: action,
-			data:data
+			channelId:channelId,
+			page:page,
+			q:q,
 		};
 
 	jQuery.post(ajaxurl, post_data,function(response) {
@@ -24,22 +20,43 @@ function load(divId,action,data)
 }
 </script>
 
-<div class="channel_list">
-	<form id="channelSelect">
-		<select id="channel" onchange="load('video_list','channelOnChange',jQuery(this).val());">
-			<?php foreach($this->kg->channelList as $channel):?>
-				<option value="<?=$channel->id?>"><?=$channel->name?></option>
-			<?php endforeach;?>
-		</select>
-	</form>
+<style>
+	#videoList{width:620px;}
+	.tablenav-pages{margin-right:20px;}
+	.widefat td {padding:4px 4px 4px;}
+	td h3{margin-bottom:10px;}
+	td input{margin:5px;}
+	#loading{width:100px; margin:auto;}
+</style>
+
+<div class="tablenav top">
+	<div class="alignleft actions">
+		<form id="channelSelect">
+			<select id="channel" onchange="load('video_list','channelOnChange',jQuery(this).val(),1,'');">
+				<option value="0">Select A Channel</option>
+				<?php foreach($this->kg->channelList as $channel):?>
+					<option value="<?=$channel->id?>"><?=$channel->name?></option>
+				<?php endforeach;?>
+			</select>
+		</form>
+	</div>
+	<!-- 
+	<div class="alignleft actions">
+		<form id="channelSelect">
+			<input id="search" name="q" value="" />
+			<input type="button" name="" id="search-submit" onClick="load('video_list','onSearch','',1,jQuery('#search').val());" class="button-secondary" value="Search">
+		</form>
+	</div>
+	 -->
 </div>
 
+
 <div id="video_list">
-	<table class="wp-list-table widefat fixed">
+	<table class="wp-list-table widefat">
 		<thead>
 			<tr>
 				<th class="manage-column column-title"></th>
-				<th class="manage-column column-title">Title</th>
+				<th class="manage-column column-title"></th>
 				<th class="manage-column column-title"></th>
 			</tr>
 		</thead>
