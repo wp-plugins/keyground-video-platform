@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.kg-video-container{width:650px; font-size:12px;}
+.container-title{font-size:14px; font-weight:bold;}
+.video-box{width:194px; float:left; margin-left:10px;}
+
+#adminmenuback, #adminmenuwrap{display:none; width:0px;}
+.folded #wpcontent{width:620px; margin-left:20px;}
+.widefat {width:620px;}
+#videoList{width:620px;}
+.tablenav-pages{margin-right:10px;}
+.widefat h3 {margin-top:0px;}
