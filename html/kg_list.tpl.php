@@ -1,7 +1,7 @@
 <script>
 jQuery(document).ready(function() {
 	jQuery("div#video_list").ajaxStart(function(){
-		jQuery(this).html('<div id="loading"><img src="<?=$this->base_url?>html/images/1loading.gif"/> <br/> Loading...</div>');
+		jQuery(this).html('<div id="loading"><img src="<?=plugins_url('images/1loading.gif',__FILE__);?>"/> <br/> Loading...</div>');
 	});
 });
 		

@@ -3,7 +3,7 @@
 Plugin Name: Keyground Video Platform
 Plugin URI: http://wordpress.org/extend/plugins/keyground-video-platform/
 Description: Adds Web TV functionality to your wordpress blog. This plugin integrates your wordpress to your keyground account. 
-Version: 0.4.3.6
+Version: 0.4.3.9
 Author: Keyground
 Author URI: http://www.keyground.com
 License: GPL2
@@ -29,7 +29,7 @@ class WP_Keyground
 		
 		$this->autoUpdate=get_option("kg_auto_update");
 		$this->is_admin = is_admin(); //(bool)current_user_can( 'manage_options' );
-		$this->base_url = plugin_dir_url(__FILE__);
+		//$this->base_url = plugin_dir_url(__FILE__);
 		
 		if($this->is_admin){
 			$this->initAdmin();
@@ -74,7 +74,7 @@ class WP_Keyground
 	}
 	
 	public function load_kg_admin_style(){
-        wp_register_style( 'keyground', $this->base_url."kg-admin.css");
+        wp_register_style( 'keyground', plugins_url('kg-admin.css',__FILE__));
         wp_enqueue_style( 'keyground' );
 	}
 
@@ -115,7 +115,7 @@ class WP_Keyground
 	
 	public function media_buttons() {
 		$title = __( 'Add Keyground Video', 'keyground' );
-		echo "<a href='admin.php?page=keyground&amp;action=videoList&amp;iframe&amp;TB_iframe=true' onclick='return false;' class='thickbox' title='keyground'><img src='".$this->base_url."html/images/kg_icon.png' alt='keyground' /></a>";
+		echo "<a href='admin.php?page=keyground&amp;action=videoList&amp;iframe&amp;TB_iframe=true' onclick='return false;' class='thickbox' title='keyground'><img src='".plugins_url('html/images/kg_icon.png',__FILE__)."' alt='keyground' /></a>";
 	}
 	
 	public function adminActions()
@@ -268,3 +268,6 @@ class WP_Keyground
 	}
 	
 }
+
+
+
