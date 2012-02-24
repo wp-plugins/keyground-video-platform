@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+#adminmenuback, #adminmenuwrap{display:none; width:0px;}
+.folded #wpcontent{width:620px; margin-left:20px;}
+.widefat {width:620px;}
+#videoList{width:620px;}
+.tablenav-pages{margin-right:10px;}
