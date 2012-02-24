@@ -64,3 +64,5 @@ jQuery(document).ready(function() {
 				onClick="load('video_list','onPaginate','<?=$this->kg->videoList->params['channelId']?>','<?=$this->kg->videoList->page_count?>');">»</a></span>
 	</div>
 </div>
+
+
