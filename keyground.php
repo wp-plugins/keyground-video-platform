@@ -3,7 +3,7 @@
 Plugin Name: Keyground Video Platform
 Plugin URI: http://wordpress.org/extend/plugins/keyground-video-platform/
 Description: Adds Web TV functionality to your wordpress blog. This plugin integrates your wordpress to your keyground account. 
-Version: 0.4.4
+Version: 0.4.4.1
 Author: Keyground
 Author URI: http://www.keyground.com
 License: GPL2
