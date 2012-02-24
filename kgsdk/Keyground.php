@@ -4,13 +4,14 @@ require_once("KeygroundConfig.php");
 class Keyground
 {
 	private $channelList;
-	private $videoList;
+	public $videoList;
 	private $channel;
 	private $video;
 	private $defaultChannel;
 	
-	public $apiKey;
-	public $adapter;
+	
+	private $apiKey;
+	private $adapter;
 	
 	
 	public function __construct($apiKey=NULL)
@@ -20,6 +21,8 @@ class Keyground
 		
 		$this->adapter = new KeygroundAdapter($this->apiKey);
 		$this->channelList = new KG_ChannelList($this->adapter);
+		$this->videoList = new KG_VideoList($this->adapter);
+		$this->videoList->find();
 	}
 	
 	public function __get($name)
@@ -32,14 +35,6 @@ class Keyground
 				return $this->channelList;
 			
 				break;	
-			case 'videoList':
-				if(!is_object($this->videoList)) {
-					$this->videoList = new KG_VideoList($this->adapter);
-					$this->videoList->find();
-				}
-				return $this->videoList;
-				
-				break;
 			default:
 				break;
 		}
@@ -74,30 +69,6 @@ class KG_ChannelList implements Iterator
 		$xml = $xml[0];
 		return new KG_Channel($xml,$this->adapter);
 	}
-	
-	/*
-	public function __get($name)
-	{
-		switch ($name){
-		
-			case 'channel':
-				if(is_object($this->channel))
-					return $this->channel;
-				else 
-					return $this->current();
-				break;
-			
-			case 'videoList':
-				if(is_object($this->videoList)) {
-					$this->videoList = new KG_VideoList($this->adapter);
-					$this->videoList->filter(array('channelId',$this->id));
-				}
-				break;
-			default:
-				break;
-		}
-	}
-	*/
 	
 	public function jump($position)
 	{
@@ -138,10 +109,11 @@ class KG_VideoList implements Iterator
 	//private $params;
 	
 	
-	public $filter;
+	public $params;
 	
 	public $page;
 	public $per_page;
+	public $page_count;
 	public $order;
 	public $desc;
 	public $lastModified;
@@ -156,34 +128,41 @@ class KG_VideoList implements Iterator
 	public function find($queryType=NULL,$params=NULL)
 	{
 		
-		if(is_array($params)) $this->filter = $params;
-		if(!is_null($queryType)) $this->filter['queryType'] = $queryType;
+		if(is_array($params)) $this->params = $params;
+		if(!is_null($queryType)) $this->params['queryType'] = $queryType;
 		$this->getVideos();
 	}
 	
 	public function getVideos()
 	{
-		
-		switch($this->filter['queryType']){
+		//var_dump($this->params);
+		switch($this->params['queryType']){
 			case 'by_channel_id':
-				$xml = $this->adapter->sendRequest("getVideos",$this->filter);
+				$xml = $this->adapter->sendRequest("getVideos",$this->params);
+				break;
+			case 'search':
+				$xml = $this->adapter->sendRequest("getVideos",$this->params);
 				break;
 			case 'popular':
-				$xml = $this->adapter->sendRequest("getMostPopularVideos",$this->filter);
+				$xml = $this->adapter->sendRequest("getMostPopularVideos",$this->params);
 				break;
 			case 'by_tags':
-				$xml = $this->adapter->sendRequest("getVideos",$this->filter);
+				$xml = $this->adapter->sendRequest("getVideos",$this->params);
 				break;	
 			case 'all':
-				$this->filter['all'] = 'true';
-				$xml = $this->adapter->sendRequest("getVideos",$this->filter);
+				$this->params['all'] = 'true';
+				$xml = $this->adapter->sendRequest("getVideos",$this->params);
 				break;
 			default:
 				$xml = $this->adapter->sendRequest("getVideos");		
 		}
 		
 	
-		$this->objectCount = count($xml->videos->video); 
+		$this->objectCount = count($xml->videos->video);
+		$this->page = (string)$xml->page;
+		$this->per_page = (string)$xml->per_page;
+		$this->page_count = (string)$xml->page_count;
+		$this->objectCount = (string)$xml->total_object_count;
 		$this->videos = $xml->videos->video;
 		
 	}
@@ -399,6 +378,8 @@ class KeygroundAdapter
 		echo "<h2>Request Data</h2>";
 		var_dump($post_data);
 		*/
+	
+		
 		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, API_URL);
