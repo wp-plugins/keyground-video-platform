@@ -3,7 +3,7 @@
 Plugin Name: Keyground Video Platform
 Plugin URI: http://wordpress.org/extend/plugins/keyground-video-platform/
 Description: Adds Web TV functionality to your wordpress blog. This plugin integrates your wordpress to your keyground account. 
-Version: 0.4
+Version: 0.4.3
 Author: Keyground
 Author URI: http://www.keyground.com
 License: GPL2
@@ -21,6 +21,7 @@ class WP_Keyground
 	public $apiKey;
 	public $autoUpdate;
 	public $kg;
+	public $base_url;
 	
 	public function __construct()
 	{
@@ -28,6 +29,7 @@ class WP_Keyground
 		
 		$this->autoUpdate=get_option("kg_auto_update");
 		$this->is_admin = is_admin(); //(bool)current_user_can( 'manage_options' );
+		$this->base_url = plugins_dir_url("",__FILE__).'/';
 		
 		if($this->is_admin){
 			$this->initAdmin();
@@ -59,9 +61,23 @@ class WP_Keyground
 		add_action('admin_menu', array(&$this, 'adminKGMenu'));
 		add_action('media_buttons', array(&$this, 'media_buttons'));
 		
-		add_action('wp_ajax_channelOnChange', array(&$this, 'onChannelRequest'));
+		//add_filter('media_buttons_context', array(&$this, 'media_buttons'));
 		
+		add_action('wp_ajax_channelOnChange', array(&$this, 'onChannelRequest'));
+		add_action('wp_ajax_onPaginate', array(&$this, 'onPaginate'));
+		add_action('wp_ajax_onSearch', array(&$this, 'onSearch'));
+		
+		if(isset($_GET['action']))
+		if($_GET['action']=="videoList"){
+			add_action('admin_enqueue_scripts', array (&$this,'load_kg_admin_style'));
+		}
 	}
+	
+	public function load_kg_admin_style(){
+        wp_register_style( 'keyground', $this->base_url."kg-admin.css");
+        wp_enqueue_style( 'keyground' );
+	}
+
 	
 	public function renderTags($attr, $content) 
 	{
@@ -99,7 +115,7 @@ class WP_Keyground
 	
 	public function media_buttons() {
 		$title = __( 'Add Keyground Video', 'keyground' );
-		echo "<a href='admin.php?page=keyground&amp;iframe&amp;action=videoList&amp;TB_iframe=true' onclick='return false;' class='thickbox' title='keyground'><img src='../wp-content/plugins/keyground/html/image/kg_icon.png' alt='keyground' /></a>";
+		echo "<a href='admin.php?page=keyground&amp;action=videoList&amp;iframe&amp;TB_iframe=true' onclick='return false;' class='thickbox' title='keyground'><img src='".$this->base_url."html/images/kg_icon.png' alt='keyground' /></a>";
 	}
 	
 	public function adminActions()
@@ -172,16 +188,45 @@ class WP_Keyground
 	
 	public function onChannelRequest()
 	{
-		if($_POST['data']!=''){
-			$params = array('channelId' => $_POST['data']);
+		if($_POST['channelId']!=''){
+			$params = array('channelId' => $_POST['channelId']);
 			$this->kg->videoList->find('by_channel_id',$params);
 		}
 		include_once('html/video_list.tpl.php');
 	}
+	
+	public function onPaginate()
+	{
+		if($_POST['page']!=''){
+			$params = array(
+				'channelId' => $_POST['channelId'],
+				'page'		=> $_POST['page']
+			);
+			
+			if(isset($_POST['q'])) $params['q'] = $_POST['q']; 
+			$this->kg->videoList->find('by_channel_id',$params);
+		}
+		
+		include_once('html/video_list.tpl.php');
+	}
+	
+	public function onSearch()
+	{
+		if($_POST['q']!=''){
+			$params = array(
+				'q'		=> $_POST['q'],
+				'page'	=> $_POST['page']
+			);
+			$this->kg->videoList->find('search',$params);
+		}
+		
+		include_once('html/video_list.tpl.php');
+	}
+	
 	public function getShortCode($videoId)
 	{
 		$video = $this->kg->getVideo($videoId);
-		$sc="[keyground type='video' id='".$videoId."' ] ".$video->embed_code."[/keyground] ";
+		$sc="[keyground type='video' id='".$videoId."' ] ".$video->embed_code."[/keyground] <br/>";
 		$sc.=" [keyground type='description' id='".$videoId."' ] ".$video->description."[/keyground]";
 		
 		return $sc;
@@ -223,6 +268,3 @@ class WP_Keyground
 	}
 	
 }
-
-
-
