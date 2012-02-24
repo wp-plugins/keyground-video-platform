@@ -29,7 +29,7 @@ class WP_Keyground
 		
 		$this->autoUpdate=get_option("kg_auto_update");
 		$this->is_admin = is_admin(); //(bool)current_user_can( 'manage_options' );
-		$this->base_url = plugin_dir_url("",__FILE__).'/';
+		$this->base_url = plugin_dir_url(__FILE__);
 		
 		if($this->is_admin){
 			$this->initAdmin();
