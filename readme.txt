@@ -33,6 +33,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 
 == Changelog ==
 
+= 0.4.3 =
+* Ajax loading added
+* Some design fixes
+
 = 0.4.2 =
 * Small bug fixes.
 
