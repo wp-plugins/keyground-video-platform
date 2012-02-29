@@ -3,6 +3,11 @@ jQuery(document).ready(function() {
 	jQuery("div#video_list").ajaxStart(function(){
 		jQuery(this).html('<div id="loading"><img src="<?=plugins_url('images/1loading.gif',__FILE__);?>"/> <br/> Loading...</div>');
 	});
+
+	var win = window.dialogArguments || opener || parent || top;  
+	jQuery('.embed').click(function () {
+	    win.send_to_editor(jQuery(this).attr('id'));
+	}); 
 });
 		
 function load(divId,action,channelId,page,q)
