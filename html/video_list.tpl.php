@@ -1,11 +1,3 @@
-<script>
-jQuery(document).ready(function() {
-	var win = window.dialogArguments || opener || parent || top;  
-	jQuery('.embed').click(function () {
-	    win.send_to_editor(jQuery(this).attr('id'));
-	}); 
-});
-</script>
 <div class="tablenav top">
 	<div class="tablenav-pages" style="margin-right:15px;">
 		<span class="displaying-num"><?=$this->kg->videoList->objectCount?> Items</span>
@@ -64,3 +56,5 @@ jQuery(document).ready(function() {
 				onClick="load('video_list','onPaginate','<?=$this->kg->videoList->params['channelId']?>','<?=$this->kg->videoList->page_count?>');">»</a></span>
 	</div>
 </div>
+
+
