@@ -4,7 +4,7 @@ Donate link:
 Tags: video, keyground
 Requires at least: 2.0.2
 Tested up to: 3.3.1
-Stable tag: 0.4.4.3
+Stable tag: 0.4.5
 
 
 == Description ==
